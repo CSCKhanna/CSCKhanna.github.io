@@ -14,7 +14,7 @@
       --uri-gold-deep: #c79316;
       --keaney-blue: #68abe8;
       --white: #f8fbff;
-      --muted: rgba(248, 251, 255, 0.76);
+      --muted: rgba(248, 251, 255, 0.86);
       --soft: rgba(248, 251, 255, 0.12);
       --line: rgba(248, 251, 255, 0.22);
       --danger: #ff6868;
@@ -37,6 +37,40 @@
       color: var(--white);
       font-family: Arial, Helvetica, sans-serif;
       line-height: 1.45;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      z-index: 100;
+      transform: translateY(-140%);
+      padding: 10px 14px;
+      border: 2px solid var(--uri-gold);
+      border-radius: var(--radius);
+      color: var(--uri-blue);
+      background: var(--white);
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform 160ms ease;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+      outline: 3px solid var(--keaney-blue);
+      outline-offset: 3px;
     }
 
     body::before {
@@ -71,6 +105,16 @@
       color: inherit;
       font: inherit;
       cursor: pointer;
+    }
+
+    button:focus-visible,
+    .overview-card:focus-visible {
+      outline: 3px solid var(--uri-gold);
+      outline-offset: 4px;
+    }
+
+    .slide:focus {
+      outline: none;
     }
 
     .deck {
@@ -307,7 +351,7 @@
       border-radius: 999px;
       color: var(--status-color);
       background: color-mix(in srgb, var(--status-color) 16%, transparent);
-      font-size: 0.76rem;
+      font-size: 0.82rem;
       font-weight: 850;
     }
 
@@ -395,7 +439,7 @@
       border-radius: 999px;
       color: var(--uri-blue);
       background: var(--keaney-blue);
-      font-size: 0.72rem;
+      font-size: 0.84rem;
       font-weight: 900;
       text-transform: uppercase;
     }
@@ -514,8 +558,8 @@
     .source-note {
       max-width: 860px;
       margin: 2px auto 0;
-      color: rgba(248, 251, 255, 0.58);
-      font-size: 0.76rem;
+      color: rgba(248, 251, 255, 0.82);
+      font-size: 0.86rem;
       text-align: center;
     }
 
@@ -528,7 +572,7 @@
       display: flex;
       gap: 10px;
       align-items: center;
-      color: rgba(248, 251, 255, 0.82);
+      color: rgba(248, 251, 255, 0.92);
       font-size: 0.86rem;
       text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
       pointer-events: none;
@@ -618,6 +662,36 @@
       text-align: center;
     }
 
+    .utility-nav {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      z-index: 34;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .utility-nav button {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(248, 251, 255, 0.28);
+      border-radius: var(--radius);
+      color: var(--white);
+      background: rgba(0, 21, 47, 0.5);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(7px);
+      font-weight: 900;
+    }
+
+    .utility-nav button:hover,
+    .utility-nav button:focus-visible {
+      border-color: var(--uri-gold);
+      color: var(--uri-gold);
+    }
+
     .shortcut-strip {
       position: fixed;
       left: 50%;
@@ -633,7 +707,7 @@
       background: rgba(208, 166, 39, 0.12);
       color: rgba(255, 229, 162, 0.92);
       box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
-      font-size: 0.78rem;
+      font-size: 0.86rem;
       backdrop-filter: blur(7px);
     }
 
@@ -660,6 +734,28 @@
       overflow: auto;
       padding: 48px;
       background: rgba(0, 15, 34, 0.95);
+    }
+
+    .dialog-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(248, 251, 255, 0.34);
+      border-radius: var(--radius);
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.10);
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .dialog-close:hover,
+    .dialog-close:focus-visible {
+      border-color: var(--uri-gold);
+      color: var(--uri-gold);
     }
 
     .overview.is-open {
@@ -720,12 +816,18 @@
     }
 
     .help-panel {
+      position: relative;
       width: min(560px, 100%);
       padding: 24px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(0, 33, 71, 0.96);
       box-shadow: var(--shadow);
+    }
+
+    .help-panel .dialog-close {
+      top: 14px;
+      right: 14px;
     }
 
     .help-panel h2 {
@@ -909,6 +1011,13 @@
       .overview {
         padding: 28px 18px;
       }
+
+      .utility-nav {
+        right: 12px;
+        top: 12px;
+        transform: scale(0.9);
+        transform-origin: top right;
+      }
     }
 
     @media (max-width: 520px) {
@@ -916,11 +1025,23 @@
       .counter {
         display: none;
       }
+
+      .utility-nav {
+        gap: 6px;
+      }
+
+      .utility-nav button {
+        width: 34px;
+        height: 34px;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="deck" id="deck" aria-label="Pillar 1 interactive presentation">
+  <a class="skip-link" href="#deck">Skip to presentation</a>
+  <p class="sr-only" id="deckInstructions">Interactive slide deck. Use the arrow keys to navigate the main story and drill-down slides. Each slide change announces the slide title and readable slide content. Use Escape to open or close the slide overview. Use the on-screen buttons for overview, help, and fullscreen.</p>
+  <div class="sr-only" id="slideStatus" role="status" aria-live="polite" aria-atomic="true" aria-relevant="text"></div>
+  <main class="deck" id="deck" aria-label="Pillar 1 interactive presentation" aria-describedby="deckInstructions" tabindex="-1">
     <section class="stack" data-label="Title">
       <article class="slide" data-title="Pillar 1: Teaching and Learning">
         <div class="slide-inner center">
@@ -935,7 +1056,7 @@
             <span><kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate</span>
             <span><kbd>&darr;</kbd> drill down</span>
             <span><kbd>Esc</kbd> overview</span>
-            <span><kbd>F</kbd> fullscreen</span>
+            <span><kbd>Alt</kbd> + <kbd>H</kbd> help</span>
           </div>
         </div>
       </article>
@@ -1448,41 +1569,57 @@
     <button class="down" id="downBtn" type="button" aria-label="Next vertical slide">&rsaquo;</button>
   </nav>
   <div class="counter" id="counter" aria-hidden="true">1</div>
+  <div class="utility-nav" aria-label="Presentation utilities">
+    <button id="overviewBtn" type="button" aria-label="Open slide overview, ▦" aria-controls="overview" title="Overview">▦</button>
+    <button id="helpBtn" type="button" aria-label="Open keyboard shortcuts, ?" aria-controls="help" title="Help">?</button>
+    <button id="fullscreenBtn" type="button" aria-label="Toggle fullscreen, ⛶" title="Fullscreen">⛶</button>
+  </div>
 
-  <section class="overview" id="overview" aria-label="Slide overview">
-    <h2>Overview</h2>
+  <section class="overview" id="overview" role="dialog" aria-modal="true" aria-labelledby="overviewTitle" aria-hidden="true">
+    <button class="dialog-close" id="overviewCloseBtn" type="button" aria-label="Close slide overview">×</button>
+    <h2 id="overviewTitle">Overview</h2>
     <div class="overview-grid" id="overviewGrid"></div>
   </section>
 
-  <section class="help" id="help" aria-label="Keyboard shortcuts">
-    <div class="help-panel">
-      <h2>Shortcuts</h2>
+  <section class="help" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle" aria-hidden="true">
+    <div class="help-panel" tabindex="-1">
+      <button class="dialog-close" id="helpCloseBtn" type="button" aria-label="Close keyboard shortcuts">×</button>
+      <h2 id="helpTitle">Shortcuts</h2>
       <p>This is an interactive presentation with horizontal sections and vertical drill-down slides.</p>
       <ul>
         <li><kbd>&larr;</kbd> / <kbd>&rarr;</kbd> move through the main story</li>
         <li><kbd>&uarr;</kbd> / <kbd>&darr;</kbd> move through drill-down slides</li>
         <li><kbd>Esc</kbd> open or close overview</li>
-        <li><kbd>F</kbd> toggle fullscreen</li>
-        <li><kbd>?</kbd> show or hide this help</li>
+        <li><kbd>Alt</kbd> + <kbd>F</kbd> toggle fullscreen</li>
+        <li><kbd>Alt</kbd> + <kbd>H</kbd> show or hide this help</li>
       </ul>
     </div>
   </section>
 
   <script>
+    const deck = document.getElementById("deck");
     const stacks = Array.from(document.querySelectorAll(".stack"));
     const overview = document.getElementById("overview");
     const overviewGrid = document.getElementById("overviewGrid");
     const help = document.getElementById("help");
+    const helpPanel = help.querySelector(".help-panel");
     const progress = document.getElementById("progress");
     const counter = document.getElementById("counter");
+    const slideStatus = document.getElementById("slideStatus");
     const buttons = {
       left: document.getElementById("leftBtn"),
       right: document.getElementById("rightBtn"),
       up: document.getElementById("upBtn"),
-      down: document.getElementById("downBtn")
+      down: document.getElementById("downBtn"),
+      overview: document.getElementById("overviewBtn"),
+      help: document.getElementById("helpBtn"),
+      fullscreen: document.getElementById("fullscreenBtn"),
+      overviewClose: document.getElementById("overviewCloseBtn"),
+      helpClose: document.getElementById("helpCloseBtn")
     };
     let currentH = 0;
     let currentV = 0;
+    let focusSlideOnRender = false;
 
     function stackSlides(index = currentH) {
       return Array.from(stacks[index].querySelectorAll(".slide"));
@@ -1498,6 +1635,76 @@
         index += stackSlides(i).length;
       }
       return index + currentV + 1;
+    }
+
+    function flatIndexFor(hIndex, vIndex) {
+      let index = 0;
+      for (let i = 0; i < hIndex; i += 1) {
+        index += stackSlides(i).length;
+      }
+      return index + vIndex + 1;
+    }
+
+    function slideTitle(slide, hIndex, vIndex) {
+      return slide.dataset.title || stacks[hIndex].dataset.label || `Slide ${flatIndexFor(hIndex, vIndex)}`;
+    }
+
+    function activeSlide() {
+      return stackSlides()[currentV];
+    }
+
+    function activeSlideLabel() {
+      const slide = activeSlide();
+      return `Slide ${currentFlatIndex()} of ${totalSlides()}: ${slideTitle(slide, currentH, currentV)}`;
+    }
+
+    function readableSlideContent(slide) {
+      const clone = slide.cloneNode(true);
+      clone.querySelectorAll("[aria-hidden='true'], script, style").forEach((node) => node.remove());
+      clone.querySelectorAll("kbd").forEach((key) => {
+        key.replaceWith(document.createTextNode(` ${key.textContent.trim()} `));
+      });
+      return clone.textContent
+        .replace(/\s+/g, " ")
+        .replace(/([x✓])(?=[A-Z])/g, "$1 ")
+        .replace(/\s+([,.;:!?])/g, "$1")
+        .trim();
+    }
+
+    function announceActiveSlide() {
+      const label = activeSlideLabel();
+      const content = readableSlideContent(activeSlide());
+      slideStatus.textContent = content ? `${label}. Slide content: ${content}` : label;
+    }
+
+    function syncOverlayState() {
+      const overviewOpen = overview.classList.contains("is-open");
+      const helpOpen = help.classList.contains("is-open");
+      const overlayOpen = overviewOpen || helpOpen;
+      overview.setAttribute("aria-hidden", String(!overviewOpen));
+      help.setAttribute("aria-hidden", String(!helpOpen));
+      deck.toggleAttribute("inert", overlayOpen);
+      deck.setAttribute("aria-hidden", String(overlayOpen));
+      buttons.overview.setAttribute("aria-expanded", String(overviewOpen));
+      buttons.help.setAttribute("aria-expanded", String(helpOpen));
+    }
+
+    function initializeSemantics() {
+      document.querySelectorAll(".card-grid, .priority-grid, .numbered, .flow, .metric-row").forEach((list) => {
+        list.setAttribute("role", "list");
+      });
+      document.querySelectorAll(".card, .priority, .numbered-item, .flow-card, .metric").forEach((item) => {
+        item.setAttribute("role", "listitem");
+      });
+      stacks.forEach((stack, hIndex) => {
+        stackSlides(hIndex).forEach((slide, vIndex) => {
+          slide.id = slide.id || `slide-${hIndex + 1}-${vIndex + 1}`;
+          slide.setAttribute("role", "group");
+          slide.setAttribute("aria-roledescription", "slide");
+          slide.setAttribute("aria-label", `Slide ${flatIndexFor(hIndex, vIndex)} of ${totalSlides()}: ${slideTitle(slide, hIndex, vIndex)}`);
+          slide.tabIndex = -1;
+        });
+      });
     }
 
     function clampPosition() {
@@ -1532,21 +1739,31 @@
       stacks.forEach((stack, hIndex) => {
         const activeStack = hIndex === currentH;
         stack.classList.toggle("is-active", activeStack);
+        stack.setAttribute("aria-hidden", String(!activeStack));
         Array.from(stack.querySelectorAll(".slide")).forEach((slide, vIndex) => {
-          slide.classList.toggle("is-active", activeStack && vIndex === currentV);
+          const active = activeStack && vIndex === currentV;
+          slide.classList.toggle("is-active", active);
+          slide.setAttribute("aria-hidden", String(!active));
         });
       });
       const flat = currentFlatIndex();
       progress.style.setProperty("--progress", `${(flat / totalSlides()) * 100}%`);
       counter.textContent = currentV ? `${currentH + 1}.${currentV + 1}` : `${currentH + 1}`;
+      document.title = `${slideTitle(activeSlide(), currentH, currentV)} | Pillar 1 URI Interactive Presentation`;
       updateButtons();
       setHash();
       renderOverview();
+      syncOverlayState();
+      if (focusSlideOnRender && !overview.classList.contains("is-open") && !help.classList.contains("is-open")) {
+        activeSlide().focus({ preventScroll: true });
+        focusSlideOnRender = false;
+      }
+      announceActiveSlide();
     }
 
     function navigate(direction) {
       if (help.classList.contains("is-open")) {
-        help.classList.remove("is-open");
+        closeOverlays();
         return;
       }
       if (overview.classList.contains("is-open") && direction !== "overview") {
@@ -1555,21 +1772,73 @@
       if (direction === "left" && currentH > 0) {
         currentH -= 1;
         currentV = 0;
+        focusSlideOnRender = true;
       }
       if (direction === "right" && currentH < stacks.length - 1) {
         currentH += 1;
         currentV = 0;
+        focusSlideOnRender = true;
       }
       if (direction === "up" && currentV > 0) {
         currentV -= 1;
+        focusSlideOnRender = true;
       }
       if (direction === "down" && currentV < stackSlides().length - 1) {
         currentV += 1;
+        focusSlideOnRender = true;
       }
       if (direction === "overview") {
         overview.classList.toggle("is-open");
       }
       render();
+      if (direction === "overview" && overview.classList.contains("is-open")) {
+        overview.querySelector(".overview-card.is-current")?.focus();
+      }
+    }
+
+    function toggleHelp() {
+      const willOpen = !help.classList.contains("is-open");
+      overview.classList.remove("is-open");
+      help.classList.toggle("is-open", willOpen);
+      syncOverlayState();
+      if (willOpen) {
+        helpPanel.focus({ preventScroll: true });
+      }
+    }
+
+    function closeOverlays() {
+      overview.classList.remove("is-open");
+      help.classList.remove("is-open");
+      syncOverlayState();
+      activeSlide().focus({ preventScroll: true });
+    }
+
+    function focusableElements(container) {
+      return Array.from(container.querySelectorAll("button, [href], [tabindex]:not([tabindex='-1'])"))
+        .filter((element) => !element.disabled && element.getAttribute("aria-hidden") !== "true");
+    }
+
+    function trapOverlayFocus(event) {
+      const activeDialog = help.classList.contains("is-open") ? help : overview.classList.contains("is-open") ? overview : null;
+      if (!activeDialog || event.key !== "Tab") return false;
+      const focusable = focusableElements(activeDialog);
+      if (!focusable.length) {
+        event.preventDefault();
+        return true;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+        return true;
+      }
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+        return true;
+      }
+      return false;
     }
 
     function toggleFullscreen() {
@@ -1589,7 +1858,7 @@
           const title = slide.dataset.title || stack.dataset.label || `Slide ${flat}`;
           const current = hIndex === currentH && vIndex === currentV;
           return `
-            <button class="overview-card ${current ? "is-current" : ""}" type="button" data-h="${hIndex}" data-v="${vIndex}">
+            <button class="overview-card ${current ? "is-current" : ""}" type="button" data-h="${hIndex}" data-v="${vIndex}" aria-current="${current ? "true" : "false"}" aria-label="Go to slide ${flat} of ${totalSlides()}: ${title}">
               <strong>${hIndex + 1}${vIndex ? "." + (vIndex + 1) : ""}</strong>
               <span>${title}</span>
             </button>
@@ -1601,25 +1870,60 @@
           currentH = Number(button.dataset.h);
           currentV = Number(button.dataset.v);
           overview.classList.remove("is-open");
+          focusSlideOnRender = true;
           render();
         });
       });
     }
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowLeft") navigate("left");
-      if (event.key === "ArrowRight" || event.key === " ") navigate("right");
-      if (event.key === "ArrowUp") navigate("up");
-      if (event.key === "ArrowDown") navigate("down");
-      if (event.key === "Escape") navigate("overview");
-      if (event.key.toLowerCase() === "f") toggleFullscreen();
-      if (event.key === "?") help.classList.toggle("is-open");
+      if (trapOverlayFocus(event)) return;
+      const overlayOpen = overview.classList.contains("is-open") || help.classList.contains("is-open");
+      if (event.key === "Escape") {
+        event.preventDefault();
+        if (overlayOpen) {
+          closeOverlays();
+        } else {
+          navigate("overview");
+        }
+        return;
+      }
+      if (overlayOpen) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        navigate("left");
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        navigate("right");
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        navigate("up");
+      }
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        navigate("down");
+      }
+      if (event.altKey && event.key.toLowerCase() === "f") {
+        event.preventDefault();
+        toggleFullscreen();
+      }
+      if (event.altKey && event.key.toLowerCase() === "h") {
+        event.preventDefault();
+        toggleHelp();
+      }
     });
 
     buttons.left.addEventListener("click", () => navigate("left"));
     buttons.right.addEventListener("click", () => navigate("right"));
     buttons.up.addEventListener("click", () => navigate("up"));
     buttons.down.addEventListener("click", () => navigate("down"));
+    buttons.overview.addEventListener("click", () => navigate("overview"));
+    buttons.help.addEventListener("click", toggleHelp);
+    buttons.fullscreen.addEventListener("click", toggleFullscreen);
+    buttons.overviewClose.addEventListener("click", closeOverlays);
+    buttons.helpClose.addEventListener("click", closeOverlays);
     let touchStartX = 0;
     let touchStartY = 0;
     document.addEventListener("touchstart", (event) => {
@@ -1639,17 +1943,24 @@
       }
     }, { passive: true });
     overview.addEventListener("click", (event) => {
-      if (event.target === overview) overview.classList.remove("is-open");
+      if (event.target === overview) {
+        closeOverlays();
+      }
     });
     help.addEventListener("click", (event) => {
-      if (event.target === help) help.classList.remove("is-open");
+      if (event.target === help) {
+        closeOverlays();
+      }
     });
     window.addEventListener("hashchange", () => {
       overview.classList.remove("is-open");
+      help.classList.remove("is-open");
       readHash();
+      focusSlideOnRender = true;
       render();
     });
 
+    initializeSemantics();
     readHash();
     render();
   </script>
