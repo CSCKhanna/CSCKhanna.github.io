@@ -1542,7 +1542,7 @@
 </head>
 <body>
   <a class="skip-link" href="#deck">Skip to presentation</a>
-  <p class="sr-only" id="deckInstructions">Interactive slide deck. Use arrow keys or edge controls to navigate horizontal sections and vertical drill-down slides. Animated down prompts indicate available drill-down content. Use Escape for the overview and Alt H for help.</p>
+  <p class="sr-only" id="deckInstructions">Interactive slide deck. Use arrow keys or edge controls to navigate horizontal sections and vertical drill-down slides. On the final slide, the right arrow returns to the start. Animated down prompts indicate available drill-down content. Use Escape for the overview and Alt H for help.</p>
   <div class="sr-only" id="slideStatus" role="status" aria-live="polite" aria-atomic="true" aria-relevant="text"></div>
   <main class="deck" id="deck" aria-label="URI Academic Affairs AI Task Force Report 2026 interactive presentation" aria-describedby="deckInstructions" tabindex="-1">
     <section class="stack" data-label="Cover">
@@ -2033,7 +2033,7 @@
     <div class="help-panel" tabindex="-1">
       <button class="dialog-close" id="helpCloseBtn" type="button" aria-label="Close keyboard shortcuts">&times;</button>
       <h2 id="helpTitle">Shortcuts</h2>
-      <p>This interactive briefing uses side arrows for the main story, top arrows for returning from drill-down slides, and animated down prompts where deeper content is available.</p>
+      <p>This interactive briefing uses side arrows for the main story, top arrows for returning from drill-down slides, and animated down prompts where deeper content is available. On the final slide, the right arrow returns to the start.</p>
       <ul>
         <li><kbd>&larr;</kbd> / <kbd>&rarr;</kbd> move through the main story</li>
         <li><kbd>&darr;</kbd> follow an animated down prompt into more detail</li>
@@ -2220,9 +2220,10 @@
     }
 
     function updateButtons() {
+      const onFinalSlide = currentFlatIndex() === totalSlides();
       const availability = {
         left: currentH > 0,
-        right: currentH < stacks.length - 1,
+        right: currentH < stacks.length - 1 || onFinalSlide,
         up: currentV > 0,
         down: false
       };
@@ -2231,6 +2232,10 @@
         buttons[key].hidden = !isAvailable;
         buttons[key].setAttribute("aria-hidden", String(!isAvailable));
       });
+      const rightLabel = onFinalSlide ? "Return to Start" : "Next slide";
+      buttons.right.setAttribute("aria-label", rightLabel);
+      buttons.right.title = rightLabel;
+      buttons.right.dataset.tooltip = rightLabel;
     }
 
     function render() {
@@ -2277,10 +2282,16 @@
         currentV = 0;
         focusSlideOnRender = true;
       }
-      if (direction === "right" && currentH < stacks.length - 1) {
-        currentH += 1;
-        currentV = 0;
-        focusSlideOnRender = true;
+      if (direction === "right") {
+        if (currentH < stacks.length - 1) {
+          currentH += 1;
+          currentV = 0;
+          focusSlideOnRender = true;
+        } else if (currentFlatIndex() === totalSlides()) {
+          currentH = 0;
+          currentV = 0;
+          focusSlideOnRender = true;
+        }
       }
       if (direction === "up" && currentV > 0) {
         currentV -= 1;
