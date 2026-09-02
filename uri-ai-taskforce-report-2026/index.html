@@ -949,13 +949,35 @@
       font-weight: 900;
       box-shadow: 0 0 0 1px rgba(208, 166, 39, 0.1), 0 12px 28px rgba(0, 33, 71, 0.12);
       animation: promptPulse 2.35s ease-in-out infinite;
+      cursor: pointer;
       isolation: isolate;
+      touch-action: manipulation;
+      user-select: none;
+      transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, filter 160ms ease;
+    }
+
+    .down-prompt:hover,
+    .down-prompt:focus-visible {
+      border-color: var(--uri-gold);
+      background: rgba(208, 166, 39, 0.24);
+      filter: brightness(1.03);
+    }
+
+    .down-prompt:focus-visible {
+      outline: 3px solid rgba(104, 171, 232, 0.72);
+      outline-offset: 4px;
     }
 
     .dark .down-prompt {
       color: #ffe6a4;
       background: rgba(208, 166, 39, 0.16);
       box-shadow: 0 0 0 1px rgba(208, 166, 39, 0.2), 0 16px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .dark .down-prompt:hover,
+    .dark .down-prompt:focus-visible {
+      background: rgba(208, 166, 39, 0.24);
+      color: #fff1c7;
     }
 
     .down-prompt::before {
@@ -2044,6 +2066,7 @@
       overviewClose: document.getElementById("overviewCloseBtn"),
       helpClose: document.getElementById("helpCloseBtn")
     };
+    const downPrompts = Array.from(document.querySelectorAll(".down-prompt"));
     let currentH = 0;
     let currentV = 0;
     let focusSlideOnRender = false;
@@ -2133,6 +2156,48 @@
       });
     }
 
+    function canPromptNavigate(prompt) {
+      const slide = prompt.closest(".slide");
+      const stack = prompt.closest(".stack");
+      if (!slide || !stack || !slide.classList.contains("is-active") || !stack.classList.contains("is-active")) {
+        return false;
+      }
+      const slides = Array.from(stack.querySelectorAll(".slide"));
+      const vIndex = slides.indexOf(slide);
+      return vIndex >= 0 && vIndex < slides.length - 1;
+    }
+
+    function activateDownPrompt(prompt) {
+      if (canPromptNavigate(prompt)) {
+        navigate("down");
+      }
+    }
+
+    function syncDownPrompts() {
+      downPrompts.forEach((prompt) => {
+        const available = canPromptNavigate(prompt);
+        prompt.tabIndex = available ? 0 : -1;
+        prompt.setAttribute("aria-disabled", String(!available));
+      });
+    }
+
+    function initializeDownPrompts() {
+      downPrompts.forEach((prompt) => {
+        const promptText = prompt.textContent.replace(/\s+/g, " ").trim();
+        prompt.setAttribute("role", "button");
+        prompt.setAttribute("aria-label", `${promptText}. Go to the next detail slide.`);
+        prompt.tabIndex = -1;
+        prompt.addEventListener("click", () => activateDownPrompt(prompt));
+        prompt.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") {
+            return;
+          }
+          event.preventDefault();
+          activateDownPrompt(prompt);
+        });
+      });
+    }
+
     function clampPosition() {
       currentH = Math.max(0, Math.min(currentH, stacks.length - 1));
       currentV = Math.max(0, Math.min(currentV, stackSlides().length - 1));
@@ -2179,6 +2244,7 @@
           slide.setAttribute("aria-hidden", String(!active));
         });
       });
+      syncDownPrompts();
       const flat = currentFlatIndex();
       const total = totalSlides();
       progress.style.setProperty("--progress", `${(flat / total) * 100}%`);
@@ -2395,6 +2461,7 @@
     });
 
     initializeSemantics();
+    initializeDownPrompts();
     readHash();
     render();
 
