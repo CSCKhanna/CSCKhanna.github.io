@@ -584,6 +584,13 @@
       align-items: center;
     }
 
+    .split > :first-child,
+    .figure-layout > :first-child {
+      display: grid;
+      align-content: start;
+      gap: 22px;
+    }
+
     .split .down-prompt {
       grid-column: 1 / -1;
     }
